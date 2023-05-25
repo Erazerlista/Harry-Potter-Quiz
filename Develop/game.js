@@ -37,9 +37,11 @@ const startTimer = () => {
   }, 1000);
 };
 
-// When timer reaches 0
+// When timer reaches 0 I want it return to board.
 const handleTimeout = () => {
-  getNewQuestion();
+  clearInterval(timer);
+  localStorage.getItem('mostRecentScore', score);
+  window.location.assign('./end.html')
 };
 
 // Get a new question
