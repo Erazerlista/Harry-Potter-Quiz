@@ -3,6 +3,13 @@ const choiceElements = Array.from(document.querySelectorAll('.choice-text'));
 const progressText = document.querySelector('#progressText');
 const scoreText = document.querySelector('#score');
 const progressBarFill = document.querySelector('#progressBarFull');
+const timerElement = document.querySelector('#timerValue');
+
+let acceptingAnswers = false;
+let score = 0;
+let questionCounter = 0;
+let currentQuestion = {};
+let availableQuestions = [];
 
 // Timer for game
 let timer;
@@ -35,7 +42,6 @@ const handleTimeout = () => {
   getNewQuestion();
 };
 
-// Get a new question
 const getNewQuestion = () => {
   if (availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
     localStorage.setItem('mostRecentScore', score);
@@ -46,17 +52,39 @@ const getNewQuestion = () => {
   progressText.innerText = `Question ${questionCounter} of ${MAX_QUESTIONS}`;
   progressBarFill.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
 
-  const questionIndex = Math.floor(Math.random() * availableQuestions.length);
+  const questionIndex = questionCounter - 1; // Select questions sequentially
   currentQuestion = availableQuestions[questionIndex];
   questionElement.innerText = currentQuestion.question;
 
   choiceElements.forEach((choice, index) => {
     const choiceNumber = index + 1;
     choice.innerText = currentQuestion['choice' + choiceNumber];
+    choice.dataset.choiceNumber = choiceNumber;
+    choice.addEventListener('click', handleChoiceClick);
   });
 
   availableQuestions.splice(questionIndex, 1);
   acceptingAnswers = true;
+};
+
+const handleChoiceClick = (event) => {
+  if (!acceptingAnswers) return;
+
+  acceptingAnswers = false;
+  clearInterval(timer);
+
+  const selectedChoice = event.target.dataset.choiceNumber;
+  const answerIndex = currentQuestion.answer;
+
+  const isCorrect = selectedChoice == answerIndex;
+  if (isCorrect) {
+    incrementScore(SCORE_POINTS);
+  }
+
+  setTimeout(() => {
+    getNewQuestion();
+    startTimer();
+  }, 1000);
 };
 
 const incrementScore = (num) => {
@@ -66,7 +94,7 @@ const incrementScore = (num) => {
 
 let questions = [
   {
-    question: '1. What are the four Hogwarts houses?',
+    question: 'What are the four Hogwarts houses?',
     choice1: 'Ravenclaw, Gryffins, Salazar and Hermione',
     choice2: 'Gryffindor, Ravenclaw, Slytherin, and Hufflepuff.',
     choice3: 'IIvermorny, Hogwarts, Mahouotokoro and Blacks',
@@ -74,7 +102,7 @@ let questions = [
     answer: 2,
   },
         {
-        question: '2. What is Lord Voldemorts full, real name?',
+        question: 'What is Lord Voldemorts full, real name?',
         choice1: 'Tom Gaunt Jr.',
         choice2: 'Thomas Riddle Sr.',
         choice3: 'Tom Marvolo Riddle',
@@ -82,7 +110,7 @@ let questions = [
         answer: 3,
     },
       {
-        question: '3. Where in Kings Cross Station does the Hogwarts Express stop?',
+        question: 'Where in Kings Cross Station does the Hogwarts Express stop?',
         choice1: 'Hogsmead',
         choice2: 'Hogwarts',
         choice3: 'Platform 13',
@@ -90,7 +118,7 @@ let questions = [
         answer: 4,
     },  
     {
-        question: '4. In Book 4, which two teams compete for the Quidditch World Cup?',
+        question: 'In Book 4, which two teams compete for the Quidditch World Cup?',
         choice1: 'Ireland and America',
         choice2: 'France and Russia',
         choice3: 'Bulgaria and Ireland.',
@@ -98,7 +126,7 @@ let questions = [
         answer: 3,
     },  
     {
-        question: '5. Name the six subjects every Hogwarts student is required to study during their first two years of school.',
+        question: 'Name the six subjects every Hogwarts student is required to study during their first two years of school.',
         choice1: 'Astronomy, Charms, Defense Against the Dark Arts, Herbology, History of Magic, Potions, and Transfiguration.',
         choice2: 'Charms, Herbology, Care of Magical Creatures, Secret of the Dark Arts, Flying and Potions',
         choice3: 'Teleportation, Legilimens, Quidditch, Herbology, Spell Casting and Flying',
@@ -106,7 +134,7 @@ let questions = [
         answer: 1,
     },  
     {
-        question: '6. Who is Harry Potters godfather?',
+        question: 'Who is Harry Potters godfather?',
         choice1: 'Severus Snape',
         choice2: 'James Potter',
         choice3: 'Albus Dumbledore',
@@ -114,7 +142,7 @@ let questions = [
         answer: 4,
     },  
     {
-        question: '7. Where was Harry Potter born?',
+        question: 'Where was Harry Potter born?',
         choice1: 'Hogwarts',
         choice2: 'Privet Drive',
         choice3: ' Godrics Hollow',
@@ -122,7 +150,7 @@ let questions = [
         answer: 3,
     }, 
      {
-        question: '8. In Book 7, what three Ministry of Magic employees do Ron, Harry, and Hermione impersonate?',
+        question: 'In Book 7, what three Ministry of Magic employees do Ron, Harry, and Hermione impersonate?',
         choice1: 'Severus Snape, Voldemort and Dolorus Umbridge',
         choice2: 'Mafalda Hopkirk, Reginald Cattermole and Albert Runcorn.',
         choice3: 'Albus Dumbledore, Regulus Black and Bellatrix Lestrange',
@@ -130,7 +158,7 @@ let questions = [
         answer: 2,
     }, 
      {
-        question: '9. What spell does Harry discover written in the Half-Blood Prince’s potions textbook in Book 6, and who invented it?',
+        question: 'What spell does Harry discover written in the Half-Blood Prince’s potions textbook in Book 6, and who invented it?',
         choice1: 'Amortenia. Tom Riddle',
         choice2: 'Sectumsempra, Sirus Black',
         choice3: 'Sectumsempra, Severus Snape.',
@@ -138,7 +166,7 @@ let questions = [
         answer: 3,
     }, 
     {
-        question: '10. What do the abbreviations for the two main wizarding exams, O.W.L.s and N.E.W.T.s, stand for?',
+        question: 'What do the abbreviations for the two main wizarding exams, O.W.L.s and N.E.W.T.s, stand for?',
         choice1: 'Ordinary Wizarding Level and Nastily Exhausting Wizarding Test.',
         choice2: 'Outstanding Wizards Level and Neville Examination Wizarding Tests',
         choice3: 'It does not stand for anything',
