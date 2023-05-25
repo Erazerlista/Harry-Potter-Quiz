@@ -9,5 +9,5 @@ highScoresList.innerHTML = highScores.map(score => {
 
 backButton.addEventListener('click', () => {
     console.log('button clicked');
-    window.location.assign('/index.html');
+    window.location.assign('./index.html');
 });
