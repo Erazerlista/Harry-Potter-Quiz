@@ -21,9 +21,9 @@
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 4rem;
     color: #ffff;
-    margin-bottom: 40px;
+    margin-bottom: 3rem;
     font-family: POTTERFONT;
 }
 
@@ -46,9 +46,9 @@ h2 {
 
 .container p {
     color: white;
-    font-size: 24px;
+    font-size: 2rem;
     text-align: center;
-    padding-bottom: 20px;
+    padding-bottom: 2rem;
 }
 
 .container {
@@ -78,6 +78,7 @@ justify-center {
 
 .text-center {
     text-align: center;
+    align-items: center;
 }
 
 .hidden {
@@ -88,9 +89,14 @@ justify-center {
     background-color: rgb(235, 199, 0);
 }
 
+
+#highscore-btn:hover {
+    box-shadow: 0 0.4rem 1.4rem 0 rgba(255, 255, 0, 0.5)
+}
+
 .btn {
-    font-size: 25px;
-    padding: 30px;
+    font-size: 2rem;
+    padding: 2rem;
     border-radius: 12px;
     width: 30rem;
     text-align: center;
@@ -111,14 +117,6 @@ justify-center {
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
-}
-
-#highscore-btn {
-    background: linear-gradient(90 deg, rgb(18, 92, 255)0%, rgb(0, 10, 255)100%);
-}
-
-#highscore-btn:hover {
-    box-shadow: 0 0.4rem 1.4rem 0 rgba(255, 255, 0, 0.5)
 }
 
 .fas fa-broom {

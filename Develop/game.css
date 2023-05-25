@@ -4,12 +4,12 @@ body {
 
 .choice-container {
     display: flex;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.5rem;
     width: 100%;
     border-radius: 4px;
     background: rgb(18, 93, 255);
-    font-size: 3rem;
-    min-width: 80rem;
+    font-size: 1.8rem;
+    min-width: 8rem;
 }
 
 .choice-container:hover {
@@ -26,9 +26,8 @@ body {
 }
 #timerValue {
     color: red;
+    display: inline-block;
 }
-
-
 
 
 .choice-prefix {
@@ -48,6 +47,7 @@ body {
 .incorrect {
     background: linear-gradient(32deg, rgba(238, 29, 1)0%, rgb(224, 11, 11, 1)100%)
 }
+/*hud Section*/
 
 #hud{
     display: flex;
@@ -62,16 +62,20 @@ body {
 .hud-main-text {
     text-align: center;
 }
+
+/*progress bar section*/
+
 #progressBar {
     width: 20rem;
-    height: 3rem;
-    border: 0.2rem solid rgb(41,232,111)
+    height: 4rem;
+    border: 0.3rem solid rgb(41,232,111)
 }
 
 #progressBarfull {
     height:100%;
     background: rgb(11, 223, 36);
     width: 0%;
+    transition: width 0.2s ease-in-out;
 }
 
 @media screen and(max-width: 768px){
